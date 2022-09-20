@@ -6,7 +6,7 @@ _leonardo_nums = [1, 1]
 
 
 # returns the k-th Leonardo number
-def l_(k):
+def l_(k: int) -> int:
     try:
         return _leonardo_nums[k]
     except IndexError:
@@ -16,10 +16,10 @@ def l_(k):
 
 
 # sorts into ascending order
-def smooth_sort(arr):
-    size_list = _create_heap(arr)
-    _sort_heap(arr, size_list)
-    return arr
+def smooth_sort(arr_: list[int]) -> list[int]:
+    size_list = _create_heap(arr_)
+    _sort_heap(arr_, size_list)
+    return arr_
 
 
 # sorts the max heap in-place. requires the list of sizes of leonardo trees in
@@ -55,17 +55,17 @@ def _dequeue_max(heap, size_list, heap_size):
 
 # modifies array in-place to make a heap. returns list of sizes of leonardo
 # trees in the forest
-def _create_heap(arr):
+def _create_heap(arr_):
     size_list = []
-    for heap_end in range(len(arr)):
+    for heap_end in range(len(arr_)):
         # Update the sizes of the trees in the forest
         _add_new_root(size_list)
 
         # Swap the root nodes of the trees. Return [heap index, size index]
-        idx, size_idx = _fix_roots(arr, size_list, heap_end, len(size_list) - 1)
+        idx, size_idx = _fix_roots(arr_, size_list, heap_end, len(size_list) - 1)
 
         # Fix the tree that now has the new node
-        _sift_down(arr, idx, size_list[size_idx])
+        _sift_down(arr_, idx, size_list[size_idx])
 
     return size_list
 
@@ -145,14 +145,20 @@ def _sift_down(heap, root_idx, tree_size):
             tree_size = tree_size - 1
 
 
-def main(args):
-    lst = ast.literal_eval(args)
-    smooth_sort(lst)
-    return lst
+def main(args_: list[int]) -> list[int]:
+    arr_ = args_.copy()
+    smooth_sort(arr_)
+    return arr_
 
 
 if __name__ == "__main__":
     try:
-        print(main(sys.argv[1]))
+        print(main(ast.literal_eval(sys.argv[1])))
     except IndexError:
-        print(main("[10, 23, 4, 1, 32, 4, 5, 11, 7, 9, 8]"))
+        print(main([10, 23, 4, 1, 32, 4, 5, 11, 7, 9, 8]))
+    except TypeError as e:
+        print(f"{type(e)}: {e}")
+    except ValueError as e:
+        print(f"{type(e)}: {e}")
+    except SyntaxError as e:
+        print(f"{type(e)}: {e}")
